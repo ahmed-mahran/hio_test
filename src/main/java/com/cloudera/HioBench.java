@@ -364,9 +364,9 @@ public class HioBench { //extends Configured {
           "new file now with length " + options.nGigsInFile + " gigs...");
       writeFile(fs);
       System.out.println("done.");
-    } else if (fs.getLength(options.filePath) != options.nBytesInFile) {
+    } else if (fs.getFileStatus(options.filePath).getLen() != options.nBytesInFile) {
       System.out.println("existing file " + options.filename + " has length " +
-        fs.getLength(options.filePath) + ", but we wanted length " +
+        fs.getFileStatus(options.filePath).getLen() + ", but we wanted length " +
         options.nBytesInFile + ".  Re-creating.");
       writeFile(fs);
       System.out.println("done.");

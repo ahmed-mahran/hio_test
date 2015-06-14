@@ -1,2 +1,7 @@
 build
 *.swp
+target
+bin
+.classpath
+.project
+.settings

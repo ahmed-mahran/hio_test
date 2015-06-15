@@ -333,8 +333,8 @@ public class HioBench { //extends Configured {
                 float percent = amtRead * 100;
                 percent /= options.nBytesToRead;
                 System.out.println(Thread.currentThread().getName() +
-                    ": read amtRead = " + amtRead + " out of " +
-                    options.nBytesToRead + " (" + percent + "%" + ")");
+                    ": read amtRead = " + prettyPrintByteSize(amtRead) + " out of " +
+                    prettyPrintByteSize(options.nBytesToRead) + " (" + percent + "%" + ")");
               }
               checkTimeCounter = 0;
             }

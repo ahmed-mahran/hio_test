@@ -42,12 +42,17 @@ public class HioBench { //extends Configured {
         "hio.nthreads [number-of-threads]   Number of simultaneous threads\n" +
         "hio.ngigs.to.read [gigabytes]      Number of gigabytes to read in each thread\n" +
         "hio.nmegs.to.read [megs]           Number of megabytes to read in each thread\n" +
-        "hio.read.chunk.bytes [bytes]       Number of bytes to read in each chunk (default 512)\n" +
+        "hio.read.chunk.bytes [bytes]       Number of bytes to read in each chunk (default 1m)\n" +
         "hio.ngigs.in.file [gigabytes]      Number of gigabytes in the file to write\n" +
         "hio.hdfs.uri [uri]                 The HDFS URI to talk to.\n" +
         "hio.hdfs.file.name [name]          The name of the input file to use.\n" +
         "                                   If the file already exists, we will use it\n" +
         "                                   rather than rewriting it.\n" +
+        "hio.hdfs.test.type random|sequential\n"+
+        "                                   The order to access chunks of the file either randomly\n"+
+        "                                   (i.e. reading chunks from random offsets in the file)\n"+
+        "                                   or sequentailly (i.e. reading contiguous chunks).\n"+
+        "                                   default: random\n"+
         "dump.conf                          If set, we will dump out our\n" +
         "                                   configuration to stdout when\n" +
         "                                   starting up.\n" +

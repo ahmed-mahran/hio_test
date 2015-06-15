@@ -277,14 +277,16 @@ public class HioBench { //extends Configured {
 
     public static void readFully(FSDataInputStream in, long off, byte buf[],
         int arrayOff, int len) throws IOException {
+      int readSoFar = 0;
       while (len > 0) {
-        int ret = in.read(off + arrayOff, buf, arrayOff, len);
+        int ret = in.read(off + readSoFar, buf, arrayOff, len);
         if (ret < 0) {
           throw new IOException( "Premature EOF from inputStream reading " +
               len + "bytes from offset " + off + " in " + options.filename);
         }
         len -= ret;
         arrayOff += ret;
+        readSoFar += ret;
       }
     }
 

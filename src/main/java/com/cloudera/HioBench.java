@@ -49,13 +49,15 @@ public class HioBench { //extends Configured {
         "                                   If the file already exists, we will use it\n" +
         "                                   rather than rewriting it.\n" +
         "hio.hdfs.test.type random|sequential\n"+
-        "                                   The order to access chunks of the file either randomly\n"+
-        "                                   (i.e. reading chunks from random offsets in the file)\n"+
-        "                                   or sequentailly (i.e. reading contiguous chunks).\n"+
-        "                                   default: random\n"+
+        "                                   The order to access chunks of the file either randomly\n" +
+        "                                   (i.e. reading chunks from random offsets in the file)\n" +
+        "                                   or sequentailly (i.e. reading contiguous chunks).\n" +
+        "                                   default: random\n" +
         "dump.conf                          If set, we will dump out our\n" +
         "                                   configuration to stdout when\n" +
         "                                   starting up.\n" +
+        "verbose                            If set, all threads will print progress info to stdout.\n" +
+        "                                   Otherwise, only the first thread will do.\n" +
         "\n" +
         "A few notes about configuration:\n" +
         "If you want to be sure that your reads hit the disk, you need to set\n" +
@@ -139,6 +141,7 @@ public class HioBench { //extends Configured {
     public final Path filePath;
     public final String testType;
     public final boolean dumpConf;
+    public final boolean verbose;
 
     public Options() {
       nThreads = getIntOrDie("hio.nthreads");
@@ -164,6 +167,7 @@ public class HioBench { //extends Configured {
       dumpConf = (System.getProperty("dump.conf") != null);
       testType = getStringWithDefault("hio.hdfs.test.type", "random");
       filePath = new Path(filename);
+      verbose = (System.getProperty("verbose")) != null;
     }
   };
 
@@ -328,7 +332,8 @@ public class HioBench { //extends Configured {
                 prevPrintTime = now;
                 float percent = amtRead * 100;
                 percent /= options.nBytesToRead;
-                System.out.println("thread1: read amtRead = " + amtRead + " out of " +
+                System.out.println(Thread.currentThread().getName() +
+                    ": read amtRead = " + amtRead + " out of " +
                     options.nBytesToRead + " (" + percent + "%" + ")");
               }
               checkTimeCounter = 0;
@@ -385,7 +390,8 @@ public class HioBench { //extends Configured {
     long nanoStart = System.nanoTime();
     WorkerThread threads[] = new WorkerThread[options.nThreads];
     for (int i = 0; i < options.nThreads; i++) {
-      threads[i] = new WorkerThread(i == 0, fs, WorkerThread.createBenchReader(options, i));
+      threads[i] = new WorkerThread(options.verbose || i == 0, fs, WorkerThread.createBenchReader(options, i));
+      threads[i].setName("HIOThread-" + i);
     }
     for (int i = 0; i < options.nThreads; i++) {
       threads[i].start();

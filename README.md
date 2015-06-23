@@ -31,12 +31,17 @@ Alternately, you can directly run the jar with:
     java -Dhio.nthreads=5 -Dhio.ngigs.to.read=1 -Dhio.ngigs.in.file=1 -Dhio.hdfs.uri=hdfs://localhost:6000 com.cloudera.HioBench
 
 You can also run the jar using 'hadoop jar' command:
-- First, set the required configurations
+
+First, set the required configurations
+    
     export HADOOP_OPTS="-Dhio.nthreads=1 -Dhio.ngigs.to.read=4 -Dhio.read.chunk.bytes=1048576 -Dhio.hdfs.uri=hdfs://localhost:9000/ -Dhio.hdfs.file.name=hdfs://localhost:9000/user/host/test.in -Dhio.ngigs.in.file=4 -Dhio.hdfs.test.type=random -Dverbose"
-- Then run the benchmark
+
+Then run the benchmark
+
     hadoop jar hio_test-0.0.1-SNAPSHOT.jar com.cloudera.HioBench
 
 Contact information
 -------------------------------------------------------------
 Colin Patrick McCabe <cmccabe@alumni.cmu.edu>
+
 Ahmed Mahran <ahmahran@gmail.com>
